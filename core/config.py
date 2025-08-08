@@ -16,20 +16,23 @@ class DatabaseConfig(BaseModel):
     url: PostgresDsn
     echo: bool = False
     echo_pool: bool = False
-    max_overflow: int = 10
     pool_size: int = 50
+    max_overflow: int = 10
 
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file='.env',
+        env_file='.env.tempalte',
         case_sensitive=False,
-        env_nested_delimiter='_',
-        env_prefix='APP_CONFIG_',
+        env_nested_delimiter='__',
+        env_prefix='APP_CONFIG__',
     )
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
-    db: DatabaseConfig
+    db: DatabaseConfig = DatabaseConfig(
+        url="postgresql+asyncpg://db_test:db_test@localhost:5432/db_test"
+    )
 
 
 settings = Settings()
+print(settings.db.url)

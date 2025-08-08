@@ -25,21 +25,21 @@ main_app.include_router(
 )
 
 
-class UserData(BaseModel):
-    first_name:str
-    senond_name: Union[str, None] = None
-    email:str
-    password:str
-    repet_password:str
+# class UserData(BaseModel):
+#     first_name:str
+#     senond_name: Union[str, None] = None
+#     email:str
+#     password:str
+#     repet_password:str
 
 
-@main_app.post('/registration/')
-async def registration_user (userdata: UserData):
-    return userdata
+# @main_app.post('/registration/')
+# async def registration_user (userdata: UserData):
+#     return userdata
 
-@main_app.get('/login/')
-async def login_user (userdata: UserData):
-    return userdata
+# @main_app.get('/login/')
+# async def login_user (userdata: UserData):
+#     return userdata
 
 if __name__ == "__main__":
     uvicorn.run("main:main_app",
