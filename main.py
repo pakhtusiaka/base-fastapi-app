@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from core.config import settings
 
 from api import router as api_router
-from core.models.db_helper import db_helper
+from core.models import db_helper
 from pydantic import BaseModel
 from typing import Union, Annotated
 

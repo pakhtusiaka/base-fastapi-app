@@ -42,5 +42,4 @@ db_helper = DatabaseHelper(
     echo_pool=settings.db.echo_pool,
     max_overflow=settings.db.max_overflow,
     pool_size=settings.db.pool_size
-
 )

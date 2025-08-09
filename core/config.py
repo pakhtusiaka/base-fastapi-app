@@ -14,7 +14,7 @@ class ApiPrefix(BaseModel):
 
 class DatabaseConfig(BaseModel):
     url: PostgresDsn
-    echo: bool = True
+    echo: bool = False
     echo_pool: bool = False
     pool_size: int = 50
     max_overflow: int = 10
@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig = DatabaseConfig(
         url="postgresql+asyncpg://db_test:db_test@localhost:5432/db_test"
-    )
+)
 
 
 settings = Settings()
