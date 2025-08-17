@@ -3,7 +3,6 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import declared_attr
 from sqlalchemy import MetaData
-from sqlalchemy import UniqueConstraint
 
 from core.config import settings
 from utils import camel_case_to_snake_case
