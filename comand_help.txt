@@ -1,0 +1,22 @@
+# Генерация миграции
+alembic revision --autogenerate -m "название миграции"
+
+
+alembic revision --autogenerate -m "create user_table"
+
+# Применение миграции
+alembic upgrade head 
+
+
+alembic revision --autogenerate -m "update user_table"
+
+# Откат на одну миграцию назад
+alembic downgrade -1 
+
+# Откат на начало
+alembic downgrade base
+
+
+# Удалить и создать БД через docker-compose
+docker-compose down -v  # удалит тома с данными
+docker-compose up -d    # создаст чистую БД

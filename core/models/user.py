@@ -10,7 +10,8 @@ class User(Base):
 
     foo: Mapped[int]
     bar: Mapped[int]
-
+    
+#Пример составного уникального ограничения для записи из колонок foo и bar()
     __table_args__ = (
         UniqueConstraint("foo", "bar"),
     )
