@@ -144,10 +144,13 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+pyvenv.cfg
 
 # Spyder project settings
 .spyderproject
 .spyproject
+Lib/site-packages/
+*.py[cod]
 
 # Rope project settings
 .ropeproject
