@@ -21,25 +21,25 @@ async def lifespan(app: FastAPI):
 main_app = FastAPI(lifespan=lifespan)
 main_app.include_router(
     api_router,
-    prefix=settings.api.prefix,
 )
 
 
-# class UserData(BaseModel):
-#     first_name:str
-#     senond_name: Union[str, None] = None
-#     email:str
-#     password:str
-#     repet_password:str
+
+class UserData(BaseModel):
+    first_name:str
+    second_name: Union[str, None] = None
+    email:str
+    password:str
+    telephone:str | None = None
 
 
-# @main_app.post('/registration/')
-# async def registration_user (userdata: UserData):
-#     return userdata
+@main_app.post('/registration/')
+async def registration_user (userdata: UserData):
+    return userdata
 
-# @main_app.get('/login/')
-# async def login_user (userdata: UserData):
-#     return userdata
+@main_app.get('/login/')
+async def login_user (userdata: UserData):
+    return userdata
 
 if __name__ == "__main__":
     uvicorn.run("main:main_app",

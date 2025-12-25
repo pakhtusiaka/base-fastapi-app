@@ -12,7 +12,7 @@ class Base(DeclarativeBase):
     __abstract__ = True
 
     metadata = MetaData(
-        naming_convention=settings.db.namign_convention,
+        naming_convention=settings.db.naming_convention,
     )
 
     @declared_attr.directive
@@ -20,3 +20,4 @@ class Base(DeclarativeBase):
         return camel_case_to_snake_case(cls.__name__)
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    

@@ -2,15 +2,14 @@ from pydantic import BaseModel
 from pydantic import PostgresDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
 class RunConfig(BaseModel):
-    host: str = "0.0.0.0"
+    host: str = "127.0.0.1"
     port: int = 8000
 
 
 class ApiV1Prefix(BaseModel):
-    prefix: str = "/v1
-    users_prefix: str = "/users"
+    prefix: str = "/v1"
+    users: str = "/users"
 
 class ApiPrefix(BaseModel):
     prefix: str = "/api"
@@ -24,7 +23,7 @@ class DatabaseConfig(BaseModel):
     pool_size: int = 50
     max_overflow: int = 10
 
-    namign_convention: dict[str, str] = {
+    naming_convention: dict[str, str] = {
         "ix": "ix_%(column_0_label)s",
         "uq": "uq_%(table_name)s_%(column_0_N_name)s",
         "ck": "ck_%(table_name)s_%(constraint_name)s",
