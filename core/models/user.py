@@ -5,17 +5,27 @@ from sqlalchemy import UniqueConstraint
 from .base import Base
 
 
-class User(Base):
-    username: Mapped[str] = mapped_column(unique=True)
+# class User(Base):
+#     username: Mapped[str] = mapped_column(unique=True)
 
-    foo: Mapped[int]
-    bar: Mapped[int]
-    
+#     foo: Mapped[int]
+#     bar: Mapped[int]
+
 #Пример составного уникального ограничения для записи из колонок foo и bar()
-    __table_args__ = (
-        UniqueConstraint("foo", "bar"),
-    )
+    # __table_args__ = (
+    #     UniqueConstraint("foo", "bar"),
+    # )
 
     # Для SQLAlchemy 2.0 рекомендуется добавить repr
-    def __repr__(self):
-        return f"User(id={self.id!r}, username={self.username!r})"
+    # def __repr__(self):
+    #     return f"User(id={self.id!r}, username={self.username!r})"
+
+class UserData(Base):
+    first_name: Mapped[str] = mapped_column()
+    second_name: Mapped[str] = mapped_column()
+    email: Mapped[str] = mapped_column()
+    password: Mapped[str] = mapped_column()
+    telephone: Mapped[str] = mapped_column()
+
+    # def __repr__(self):
+    #     return f"UserData(id={self.id!r}, email={self.email!r}, first_name={self.first_name!r}, second_name={self.second_name!r})"

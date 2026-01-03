@@ -1,20 +1,18 @@
 # Установка зависимостей
 pip install -r requirements.txt
 
-
-
-
 # Генерация миграции
 alembic revision --autogenerate -m "название миграции"
 
-
 alembic revision --autogenerate -m "create user_table"
 
-# Применение миграции
-alembic upgrade head 
 
-
+# Создает файл со структурой БД,НО НЕ ПРИМЕНЯЕТ ЕГО ДЛЯ СОЗДАНИЯ СТРУКТУРЫ
 alembic revision --autogenerate -m "update user_table"
+
+# Применяет миграции НА ОСНОВЕ СОЗДАННЫХ ФАЙЛОВ из команды выше
+#Нет файлов соструктурами =нет таблиц на базе
+alembic upgrade head 
 
 # Откат на одну миграцию назад
 alembic downgrade -1 
@@ -22,6 +20,8 @@ alembic downgrade -1
 # Откат на начало
 alembic downgrade base
 
+# Запуск файла docker-compose.yaml
+docker-compose up
 
 # Удалить и создать БД через docker-compose
 docker-compose down -v  # удалит тома с данными
