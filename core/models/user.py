@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
-from sqlalchemy import UniqueConstraint
-
+from sqlalchemy import UniqueConstraint, ForeignKey
+from datetime import datetime
 from .base import Base
 
 
@@ -25,7 +25,12 @@ class UserData(Base):
     second_name: Mapped[str] = mapped_column()
     email: Mapped[str] = mapped_column()
     password: Mapped[str] = mapped_column()
+    hashed_password: Mapped[str] = mapped_column()
     telephone: Mapped[str] = mapped_column()
 
-    # def __repr__(self):
-    #     return f"UserData(id={self.id!r}, email={self.email!r}, first_name={self.first_name!r}, second_name={self.second_name!r})"
+class AccessToken(Base):
+    user_id: Mapped[int] = mapped_column(ForeignKey("user_data.id"))
+    expires_access_token: Mapped[datetime] = mapped_column
+    refresh_token: Mapped[datetime] = mapped_column
+
+    

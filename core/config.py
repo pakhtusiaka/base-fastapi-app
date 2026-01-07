@@ -1,6 +1,10 @@
 from pydantic import BaseModel
 from pydantic import PostgresDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pathlib import Path
+
+BASE_DIR = Path(__file__).parent
+
 
 class RunConfig(BaseModel):
     host: str = "127.0.0.1"
@@ -31,10 +35,17 @@ class DatabaseConfig(BaseModel):
         "pk": "pk_%(table_name)s",
     }
 
+class AuthJWT(BaseModel):
+    private_key_path: Path = BASE_DIR / "certs" / "jwt-private.pem"
+    public_key_path: Path = BASE_DIR / "certs" / "jwt-public.pem"
+    algorithm: str = "EdDSA"
+    #access_token_expire_minutes: int = 15
+    access_token_expire_minutes: int = 3
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file='.env.tempalte',
+        env_file='.env.template',
         case_sensitive=False,
         env_nested_delimiter='__',
         env_prefix='APP_CONFIG__',
@@ -44,7 +55,7 @@ class Settings(BaseSettings):
     db: DatabaseConfig = DatabaseConfig(
         url="postgresql+asyncpg://db_test:db_test@localhost:5432/db_test"
     )
-
+    auth_jwt: AuthJWT = AuthJWT()
 
 settings = Settings()
 print(settings.db.url)
