@@ -31,3 +31,4 @@ pwdlib==0.3.0
 pyjwt[crypto]==2.10.1
 pathlib==1.0.1
 python-multipart==0.0.21
+pwdlib[argon2]==0.3.0

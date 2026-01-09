@@ -10,6 +10,12 @@ class UserData(BaseModel):
     telephone: str
     active: bool = True
 
+class UserSchema(BaseModel):
+    username: str
+    email: str
+    password: str
+    active: bool = True
+
 class CreateUserData(UserData):
     pass
 

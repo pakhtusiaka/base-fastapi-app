@@ -33,4 +33,9 @@ class AccessToken(Base):
     expires_access_token: Mapped[datetime] = mapped_column
     refresh_token: Mapped[datetime] = mapped_column
 
-    
+
+class UserSchema(Base):
+    username: Mapped[str] = mapped_column()
+    email: Mapped[str] = mapped_column()
+    password: Mapped[str] = mapped_column()
+    active: Mapped[str] = mapped_column()

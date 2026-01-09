@@ -1,14 +1,16 @@
 import jwt
-
+from datetime import datetime,timedelta
 from core.config import settings
-from pwlib import PasswordHash
+from pwdlib import PasswordHash
+
+password_hash = PasswordHash.recommended()
 
 def encode_jwt(
     payload: dict,
     private_key: str = settings.auth_jwt.private_key_path.read_text(),
     algorithm: str =settings.auth_jwt.algorithm,
     expire_minutes: int =settings.auth_jwt.access_token_expire_minutes,
-    expire_minutes: int =settings.auth_jwt.access_token_expire_minutes,
+    # expire_day: int =settings.auth_jwt.access_token_expire_day,
     expire_timedelta:  timedelta | None = None,
 ):
     to_encode = payload.copy()
@@ -23,7 +25,7 @@ def encode_jwt(
     )
 
     encoded = jwt.encode(
-        payload,
+        to_encode,
         private_key,
         algorithm=algorithm,
         )
@@ -38,15 +40,15 @@ def decode(
     decode = jwt.decode(
         token, 
         public_key, 
-        algorithms=[algorithms],
+        algorithm=[algorithm],
         )
     return decode
 
 def hash_password(password: str) -> str:
-    return PasswordHash.hash(password)
+    return password_hash.hash(password)
 
 def validate_password(password: str, hashed_password: str) -> bool:
-    return PasswordHash.verify(password, hashed_password)
+    return password_hash.verify(password, hashed_password)
 
 
 
