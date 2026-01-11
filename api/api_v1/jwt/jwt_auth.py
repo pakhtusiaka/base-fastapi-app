@@ -1,6 +1,8 @@
 from core.schemas.user import UserSchema
 from auth import jwt_help
 from pydantic  import BaseModel
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from jwt.exceptions import InvalidTokenError
 
 from fastapi import (
     APIRouter,
@@ -9,6 +11,8 @@ from fastapi import (
     HTTPException,
     status,
 )
+
+http_bearer = HTTPBearer()
 
 class Token(BaseModel):
     access_token: str
@@ -70,3 +74,55 @@ def auth_user_jwt(user: UserSchema = Depends(validate_auth_user)):
         access_token=token, 
         token_type="bearer"
         )
+
+def get_currnet_token_payload(
+    credentials: HTTPAuthorizationCredentials = Depends(http_bearer)
+) -> UserSchema:
+    token = credentials.credentials
+    try:
+        payload = jwt_help.decode_jwt(
+            token=token,
+            )
+    except InvalidTokenError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="token invalid",
+        )
+    return payload
+
+
+def get_currnet_auth_user(
+    payload: dict = Depends(get_currnet_token_payload)
+) -> UserSchema:
+    username: str | None = payload.get("sub")
+    if user := user_db.get(username):
+        return user
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="token invalid (user not found)",
+        )
+
+    # print(token)
+
+def get_currnet_active_auth_user(
+    user: UserSchema = Depends(get_currnet_auth_user)
+):
+    if user.active:
+        return user
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="user inactive",
+    )
+
+@router.get("/user/me/")
+def auth_user_check_info(
+    payload: dict = Depends(get_currnet_token_payload),
+    user: UserSchema = Depends(get_currnet_active_auth_user),
+):
+    iat = payload.get("iat")
+    return {
+        "username": user.username,
+        "email": user.email,
+        "is_active": user.active,
+        "logged_in_at": iat,
+    }
