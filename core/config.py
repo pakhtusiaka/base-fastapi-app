@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).parent.parent
 
 class RunConfig(BaseModel):
     host: str = "127.0.0.1"
-    port: int = 8000
+    port: int = 8001
 
 
 class ApiV1Prefix(BaseModel):
@@ -39,8 +39,8 @@ class AuthJWT(BaseModel):
     private_key_path: Path = BASE_DIR / "certs" / "jwt-private.pem"
     public_key_path: Path = BASE_DIR / "certs" / "jwt-public.pem"
     algorithm: str = "EdDSA"
-    #access_token_expire_minutes: int = 15
-    access_token_expire_minutes: int = 3
+    access_token_expire_minutes: int = 15
+    # access_token_expire_minutes: int = 3
 
 
 class Settings(BaseSettings):

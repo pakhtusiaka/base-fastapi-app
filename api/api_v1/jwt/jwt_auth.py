@@ -1,7 +1,10 @@
 from core.schemas.user import UserSchema
 from auth import jwt_help
 from pydantic  import BaseModel
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.security import (
+    HTTPBearer, 
+    HTTPAuthorizationCredentials,
+    OAuth2PasswordBearer)
 from jwt.exceptions import InvalidTokenError
 
 from fastapi import (
@@ -12,7 +15,11 @@ from fastapi import (
     status,
 )
 
-http_bearer = HTTPBearer()
+# http_bearer = HTTPBearer()
+
+oauth2_scheme= OAuth2PasswordBearer(
+    tokenUrl="/api/jwt/login/",
+    )
 
 class Token(BaseModel):
     access_token: str
@@ -60,6 +67,8 @@ def validate_auth_user(
         
     return user
    
+def create_access_token() -> str:
+    pass
 
 @router.post(path="/login/", response_model=Token)
 def auth_user_jwt(user: UserSchema = Depends(validate_auth_user)):
@@ -76,9 +85,10 @@ def auth_user_jwt(user: UserSchema = Depends(validate_auth_user)):
         )
 
 def get_currnet_token_payload(
-    credentials: HTTPAuthorizationCredentials = Depends(http_bearer)
+    # credentials: HTTPAuthorizationCredentials = Depends(http_bearer)
+    token: str = Depends(oauth2_scheme)
 ) -> UserSchema:
-    token = credentials.credentials
+    # token = credentials.credentials
     try:
         payload = jwt_help.decode_jwt(
             token=token,
