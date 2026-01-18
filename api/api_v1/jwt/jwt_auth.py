@@ -7,6 +7,12 @@ from fastapi.security import (
     OAuth2PasswordBearer)
 from jwt.exceptions import InvalidTokenError
 
+from jwt_token_help import (
+    create_access_token,
+    create_refresh_token,
+    create_token,
+)
+
 from fastapi import (
     APIRouter,
     Depends,
@@ -23,7 +29,8 @@ oauth2_scheme= OAuth2PasswordBearer(
 
 class Token(BaseModel):
     access_token: str
-    token_type: str
+    token_type: str = "Bearer"
+    refresgh_token: str | None = None
 
 router = APIRouter(prefix="/jwt", tags=["JWT"])
 
@@ -66,22 +73,17 @@ def validate_auth_user(
         )
         
     return user
-   
-def create_access_token() -> str:
-    pass
+
 
 @router.post(path="/login/", response_model=Token)
-def auth_user_jwt(user: UserSchema = Depends(validate_auth_user)):
-    jwt_payload = {
-        #subject of the token
-        "sub": user.username,
-        "username": user.username,
-        "email": user.email,
-    }
-    token =jwt_help.encode_jwt(jwt_payload)
+def auth_user_jwt(
+    user: UserSchema = Depends(validate_auth_user)
+    ):
+    access_token = create_access_token(user)
+    refresh_token = create_refresh_token(user)
     return Token(
-        access_token=token, 
-        token_type="bearer"
+        access_token=access_token, 
+        refresh_token=refresh_token
         )
 
 def get_currnet_token_payload(
