@@ -21,7 +21,7 @@ from fastapi import (
     status,
 )
 
-# http_bearer = HTTPBearer()
+http_bearer = HTTPBearer(auto_error=False)
 
 oauth2_scheme= OAuth2PasswordBearer(
     tokenUrl="/api/jwt/login/",
@@ -32,7 +32,11 @@ class Token(BaseModel):
     refresh_token: str | None = None
     token_type: str = "Bearer"
 
-router = APIRouter(prefix="/jwt", tags=["JWT"])
+router = APIRouter(
+    prefix="/jwt",
+     tags=["JWT"],
+     dependencies=[Depends(http_bearer)],
+     )
 
 john = UserSchema(
     username='john',
