@@ -4,13 +4,13 @@ from pydantic  import BaseModel
 from fastapi.security import (
     HTTPBearer, 
     HTTPAuthorizationCredentials,
-    OAuth2PasswordBearer)
+    OAuth2PasswordBearer,
+    )
 from jwt.exceptions import InvalidTokenError
 
-from jwt_token_help import (
+from .jwt_token_help import (
     create_access_token,
     create_refresh_token,
-    create_token,
 )
 
 from fastapi import (
@@ -29,8 +29,8 @@ oauth2_scheme= OAuth2PasswordBearer(
 
 class Token(BaseModel):
     access_token: str
+    refresh_token: str | None = None
     token_type: str = "Bearer"
-    refresgh_token: str | None = None
 
 router = APIRouter(prefix="/jwt", tags=["JWT"])
 
